@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: uptime-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-uptime_monitor}
+      POSTGRES_USER: ${DB_USER:-uptime}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-uptime}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - uptime-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: uptime-backend
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3001
+      HOST: 0.0.0.0
+      DB_TYPE: ${DB_TYPE:-postgresql}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-uptime_monitor}
+      DB_USER: ${DB_USER:-uptime}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      API_KEY_REQUIRED: ${API_KEY_REQUIRED:-false}
+      MONITORING_INTERVAL: 10000
+      MAX_RESPONSE_TIME: 30000
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - uptime-network
+    restart: unless-stopped
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: uptime-frontend
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3001/api}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - uptime-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  uptime-network:
+    driver: bridge

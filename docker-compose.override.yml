@@ -1,0 +1,21 @@
+version: '3.8'
+
+# Override for local development
+services:
+  backend:
+    environment:
+      NODE_ENV: development
+    command: npm run dev
+    ports:
+      - "3001:3001"
+
+  frontend:
+    environment:
+      NODE_ENV: development
+    command: npm start
+    ports:
+      - "3000:3000"
+
+  db:
+    ports:
+      - "5432:5432"

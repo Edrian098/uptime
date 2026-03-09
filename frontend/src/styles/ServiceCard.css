@@ -1,0 +1,138 @@
+.service-card {
+  padding: 20px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.service-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.service-info h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #f1f5f9;
+}
+
+.service-url {
+  font-size: 12px;
+  color: #64748b;
+  word-break: break-all;
+}
+
+.service-status {
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.service-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  font-size: 13px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.meta-item label {
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.meta-item span {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.last-check {
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 4px;
+}
+
+.last-check small {
+  color: #64748b;
+}
+
+.service-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.service-actions button {
+  flex: 1;
+  padding: 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-toggle {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-toggle:hover {
+  background: #2563eb;
+}
+
+.btn-edit {
+  background: #10b981;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #059669;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 480px) {
+  .service-card {
+    padding: 15px;
+  }
+  
+  .service-header {
+    flex-direction: column;
+  }
+  
+  .service-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .service-actions {
+    flex-direction: column;
+  }
+}
