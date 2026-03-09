@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --omit=dev
+RUN npm install --prefer-offline --no-audit --omit=dev || npm ci --omit=dev
 
 # Build (if using TypeScript or other build steps)
 RUN npm run build || true

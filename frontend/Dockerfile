@@ -3,7 +3,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install --prefer-offline --no-audit || npm ci
 
 COPY . .
 RUN npm run build || echo "No build script defined"
@@ -16,7 +16,7 @@ COPY --from=builder /app/build ./build
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 
-RUN npm ci --omit=dev
+RUN npm install --prefer-offline --no-audit --omit=dev || npm ci --omit=dev
 
 EXPOSE 3000
 
