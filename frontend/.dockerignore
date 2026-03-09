@@ -2,11 +2,8 @@ node_modules
 npm-debug.log
 .env.local
 .DS_Store
-build
-public
 .git
 .gitignore
 README.md
 .env
-src
 .eslintignore
