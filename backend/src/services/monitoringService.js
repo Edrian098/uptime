@@ -226,7 +226,8 @@ class MonitoringService {
   
   static async sendTelegramAlert(chatId, message) {
     try {
-      // Implementation would use telegram-bot-api
+      // Telegram alert would use node-telegram-bot-api package
+      // For now, logging the alert (requires botToken setup)
       console.log(`Telegram alert to ${chatId}: ${message}`);
       return true;
     } catch (error) {
