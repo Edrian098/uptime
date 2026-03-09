@@ -16,7 +16,7 @@ COPY --from=builder /app/build ./build
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 EXPOSE 3000
 
